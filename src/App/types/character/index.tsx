@@ -10,7 +10,7 @@ export interface Character {
   image?: String;
   comics?: Comic[];
   series?: Serie[];
-  storie?: Storie[];
+  stories?: Storie[];
   events?: Event[];
   resourceURI: string;
 }
