@@ -7,6 +7,12 @@ const colors = {
   textPrimary: constants.black,
   //initial screen button text color
   textSecondary: constants.blue,
+
+  headerSimple: {
+    content: constants.white,
+    arrowGoBack: constants.white,
+    background: constants.black,
+  },
 };
 
 export const theme = {

@@ -1,22 +1,14 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
 import {
   getStorie,
   getListStories,
 } from '../../services/requests/storie/storieMarvel';
+import Header from '../../shared/components/Header';
+import styled from 'styled-components/native';
 
-const styles = StyleSheet.create({
-  mainView: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  bodyView: {
-    width: '100%',
-    height: 100,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-});
+const MainView = styled.View`
+  flex: 1;
+`;
 
 const Home = () => {
   useEffect(() => {
@@ -31,11 +23,9 @@ const Home = () => {
 
   return (
     <>
-      <View style={styles.mainView}>
-        <View style={styles.bodyView}>
-          <Text>Tela Home</Text>
-        </View>
-      </View>
+      <MainView>
+        <Header title={'Início'} goBack={() => {}} />
+      </MainView>
     </>
   );
 };
