@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {
-  getCharacter,
-  getListCharacters,
-} from '../../../services/requests/character/characterMarvel';
+  getStorie,
+  getListStories,
+} from '../../services/requests/storie/storieMarvel';
 
 const styles = StyleSheet.create({
   mainView: {
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 const Home = () => {
   useEffect(() => {
-    getListCharacters()
+    getStorie('http://gateway.marvel.com/v1/public/stories/44422')
       .then((list) => {
         console.log(list);
       })
