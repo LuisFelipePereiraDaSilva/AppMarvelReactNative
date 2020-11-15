@@ -5,6 +5,7 @@ import Header from '../../../shared/components/Header';
 import styled from 'styled-components/native';
 import ElementList from '../components/ElementList';
 import {Character} from '../../../types/character';
+import Loading from '../../../shared/components/Loading';
 
 const styles = StyleSheet.create({
   flatList: {
@@ -25,6 +26,7 @@ const Title = styled.Text`
 
 const Home = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getListCharacters()
@@ -33,6 +35,9 @@ const Home = () => {
       })
       .catch(() => {
         Alert.alert('Ocorreu um erro ao carregar os personagens');
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -40,21 +45,25 @@ const Home = () => {
     <>
       <MainView>
         <Header title={'Início'} />
-        <FlatList
-          ListHeaderComponent={() => {
-            return <Title>Personagens</Title>;
-          }}
-          contentContainerStyle={styles.flatList}
-          scrollEnabled={true}
-          data={characters}
-          keyExtractor={(item, index) => {
-            return index.toString();
-          }}
-          numColumns={2}
-          renderItem={({item}) => (
-            <ElementList name={item.name} image={item.image} />
-          )}
-        />
+        {loading ? (
+          <Loading />
+        ) : (
+          <FlatList
+            ListHeaderComponent={() => {
+              return <Title>Personagens</Title>;
+            }}
+            contentContainerStyle={styles.flatList}
+            scrollEnabled={true}
+            data={characters}
+            keyExtractor={(item, index) => {
+              return index.toString();
+            }}
+            numColumns={2}
+            renderItem={({item}) => (
+              <ElementList name={item.name} image={item.image} />
+            )}
+          />
+        )}
       </MainView>
     </>
   );
