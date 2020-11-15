@@ -7,7 +7,7 @@ export interface Character {
   id?: string;
   name: string;
   description?: string;
-  image?: String;
+  image?: string;
   comics?: Comic[];
   series?: Serie[];
   stories?: Storie[];

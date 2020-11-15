@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import ListCharacters from '../components/ListCharacters';
+import ListCharacters from '../components/ListCharacters/screen';
 import DetailsCharacter from '../components/DetailsCharacter';
 import DetailsComic from '../components/DetailsComic';
 import DetailsSerie from '../components/DetailsSerie';
