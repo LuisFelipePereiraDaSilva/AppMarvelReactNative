@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, FlatList, StyleSheet} from 'react-native';
+import {Alert, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import {getListCharacters} from '../../../services/requests/character/characterMarvel';
 import Header from '../../../shared/components/Header';
 import styled from 'styled-components/native';
 import ElementList from '../components/ElementList';
 import {Character} from '../../../types/character';
 import Loading from '../../../shared/components/Loading';
+import {NavigationContainerRef} from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   flatList: {
@@ -24,7 +25,12 @@ const Title = styled.Text`
   margin-bottom: 20px;
 `;
 
-const Home = () => {
+interface Props {
+  navigation: NavigationContainerRef;
+  resourceURI: string;
+}
+
+const ListPersonagens = (props: Props) => {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -60,7 +66,15 @@ const Home = () => {
             }}
             numColumns={2}
             renderItem={({item}) => (
-              <ElementList name={item.name} image={item.image} />
+              <TouchableOpacity
+                delayPressIn={100}
+                onPress={() =>
+                  props.navigation.navigate('DetailsCharacter', {
+                    resourceURI: item.resourceURI,
+                  })
+                }>
+                <ElementList name={item.name} image={item.image} />
+              </TouchableOpacity>
             )}
           />
         )}
@@ -69,4 +83,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default ListPersonagens;
