@@ -38,6 +38,7 @@ const MoreDetails = styled.Text`
   margin-top: 2px;
   font-size: 16px;
   color: ${theme.colors.textSecondary};
+  margin-left: 10px;
 `;
 
 interface Props {
@@ -68,7 +69,7 @@ const ListAux = (props: Props) => {
       props.navigation.navigate('DetailsCreator', {resourceURI: resourceURI});
     } else if (props.title === 'Eventos') {
       props.navigation.navigate('DetailsEvent', {resourceURI: resourceURI});
-    } else if (props.title === 'História') {
+    } else if (props.title === 'Histórias') {
       props.navigation.navigate('DetailsStorie', {resourceURI: resourceURI});
     } else if (props.title === 'Séries') {
       props.navigation.navigate('DetailsSerie', {resourceURI: resourceURI});

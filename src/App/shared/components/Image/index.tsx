@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 
 const styles = StyleSheet.create({
   image: {
-    resizeMode: 'cover',
+    resizeMode: 'stretch',
   },
 });
 
