@@ -24,9 +24,9 @@ const MainView = styled.View`
 interface Props {
   navigation: NavigationContainerRef;
 
-  route?: {
-    params?: {
-      resourceURI?: string;
+  route: {
+    params: {
+      resourceURI: string;
     };
   };
 }
@@ -36,6 +36,7 @@ const DetailsCharacter = (props: Props) => {
   const [character, setCharacter] = useState<Character>();
 
   useEffect(() => {
+    setLoading(true);
     if (props.route?.params?.resourceURI) {
       getCharacter(props.route?.params?.resourceURI)
         .then((character) => {
@@ -54,7 +55,7 @@ const DetailsCharacter = (props: Props) => {
     } else {
       errorLoadData();
     }
-  }, []);
+  }, [props]);
 
   const errorLoadData = () => {
     Alert.alert('Ocorreu um error ao carregar o personagem');
