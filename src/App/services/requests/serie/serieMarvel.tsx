@@ -77,7 +77,7 @@ const getSeries = async (idUrl?: string) => {
 
           series.push({
             id: serie.id,
-            name: serie.name,
+            name: serie.title,
             description: serie.description,
             startYear: serie.startYear,
             endYear: serie.endYear,

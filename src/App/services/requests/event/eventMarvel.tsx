@@ -77,7 +77,7 @@ const getEvents = async (idUrl?: string) => {
 
           events.push({
             id: event.id,
-            name: event.name,
+            name: event.title,
             description: event.description,
             startDate: event.start,
             endDate: event.end,

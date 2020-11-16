@@ -77,7 +77,7 @@ const getComics = async (idUrl?: string) => {
 
           comics.push({
             id: comic.id,
-            name: comic.name,
+            name: comic.title,
             description: comic.description,
             image: image,
             series: series,

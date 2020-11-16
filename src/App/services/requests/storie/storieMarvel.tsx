@@ -72,7 +72,7 @@ const getStories = async (idUrl?: string) => {
 
           stories.push({
             id: storie.id,
-            name: storie.name,
+            name: storie.title,
             description: storie.description,
             creators: creators,
             characters: characters,

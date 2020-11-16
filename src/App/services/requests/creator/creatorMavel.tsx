@@ -64,7 +64,7 @@ const getCreators = async (idUrl?: string) => {
 
           creators.push({
             id: creator.id,
-            name: creator.name,
+            name: creator.fullName,
             image: image,
             comics: comics,
             series: series,
