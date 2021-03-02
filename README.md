@@ -3,7 +3,7 @@
 ### Technologies used
 ###### Programming language: React-Native
 ###### IDE: Visual Studio Code
-###### Others: TypeScript, StyledComponents, Axios, react-native-paper.
+###### Others: TypeScript, StyledComponents, Axios, Redux, react-native-paper.
 
 ### To run the application:
 ###### 1º run the command "yarn install" or "yarn" to install libraries
