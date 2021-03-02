@@ -1,39 +1,33 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import React from 'react';
 import styled from 'styled-components/native';
-
-const width = Dimensions.get('window').width;
-
-const styles = StyleSheet.create({
-  mainView: {
-    elevation: 5,
-  },
-  image: {
-    resizeMode: 'contain',
-  },
-});
+import {theme} from '../../../../shared/styles/theme';
 
 const MainView = styled.View`
-  width: ${width / 2 - 20}px;
-  height: 210px;
-  border-radius: 10px;
-  margin-horizontal: 5px;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
-  padding: 5px;
+  margin-bottom: 18px;
+  margin-horizontal: 25px;
 `;
 
 const Image = styled.Image`
-  margin-top: 10px;
-  width: 80%;
-  flex: 1;
+  width: 80px;
+  height: 80px;
+  border-radius: 100px;
 `;
 
 const Text = styled.Text`
   font-size: 18px;
-  margin-top: 10px;
+  margin-left: 20px;
   font-weight: bold;
   text-align: center;
+  color: ${theme.colors.textNameCharacter};
+`;
+
+const Line = styled.View`
+  height: 1px;
+  background: ${theme.colors.textTertiary};
+  margin-left: 7px;
+  margin-bottom: 18px;
 `;
 
 interface Props {
@@ -44,7 +38,7 @@ interface Props {
 const ElementList = (props: Props) => {
   return (
     <>
-      <MainView style={styles.mainView}>
+      <MainView>
         <Image
           source={{
             uri: props.image
@@ -54,6 +48,7 @@ const ElementList = (props: Props) => {
         />
         <Text>{props.name}</Text>
       </MainView>
+      <Line />
     </>
   );
 };
