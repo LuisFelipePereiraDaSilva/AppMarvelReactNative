@@ -4,11 +4,12 @@ import {getSerie} from '../../services/requests/serie/serieMarvel';
 import Header from '../../shared/components/Header';
 import styled from 'styled-components/native';
 import {Serie} from '../../types/serie';
-import Loading from '../../shared/components/Loading';
 import {NavigationContainerRef} from '@react-navigation/native';
 import DataLine from '../../shared/components/DataLine';
 import Image from '../../shared/components/Image';
 import ListAux from '../../shared/components/ListAux';
+import {useDispatch} from 'react-redux';
+import * as types from '../../redux/types';
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -32,11 +33,11 @@ interface Props {
 }
 
 const DetailsSerie = (props: Props) => {
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const [serie, setSerie] = useState<Serie>();
 
   useEffect(() => {
-    setLoading(true);
+    dispatch({type: types.SET_LOADING, payload: true});
     if (props.route?.params?.resourceURI) {
       getSerie(props.route?.params?.resourceURI)
         .then((serie) => {
@@ -50,7 +51,7 @@ const DetailsSerie = (props: Props) => {
           errorLoadData();
         })
         .finally(() => {
-          setLoading(false);
+          dispatch({type: types.SET_LOADING, payload: false});
         });
     } else {
       errorLoadData();
@@ -66,9 +67,7 @@ const DetailsSerie = (props: Props) => {
     <>
       <MainView>
         <Header title={'Série'} goBack={() => props.navigation.goBack()} />
-        {loading || !serie ? (
-          <Loading />
-        ) : (
+        {serie && (
           <ScrollView contentContainerStyle={styles.scrollView}>
             <>
               <Image image={serie.image} />

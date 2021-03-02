@@ -4,10 +4,11 @@ import {getStorie} from '../../services/requests/storie/storieMarvel';
 import Header from '../../shared/components/Header';
 import styled from 'styled-components/native';
 import {Storie} from '../../types/storie';
-import Loading from '../../shared/components/Loading';
 import {NavigationContainerRef} from '@react-navigation/native';
 import DataLine from '../../shared/components/DataLine';
 import ListAux from '../../shared/components/ListAux';
+import {useDispatch} from 'react-redux';
+import * as types from '../../redux/types';
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -31,11 +32,11 @@ interface Props {
 }
 
 const DetailsStorie = (props: Props) => {
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const [storie, setStorie] = useState<Storie>();
 
   useEffect(() => {
-    setLoading(true);
+    dispatch({type: types.SET_LOADING, payload: true});
     if (props.route?.params?.resourceURI) {
       getStorie(props.route?.params?.resourceURI)
         .then((storie) => {
@@ -49,7 +50,7 @@ const DetailsStorie = (props: Props) => {
           errorLoadData();
         })
         .finally(() => {
-          setLoading(false);
+          dispatch({type: types.SET_LOADING, payload: false});
         });
     } else {
       errorLoadData();
@@ -65,9 +66,7 @@ const DetailsStorie = (props: Props) => {
     <>
       <MainView>
         <Header title={'História'} goBack={() => props.navigation.goBack()} />
-        {loading || !storie ? (
-          <Loading />
-        ) : (
+        {storie && (
           <ScrollView contentContainerStyle={styles.scrollView}>
             <>
               <DataLine title={'Id'} text={storie.id} />

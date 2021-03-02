@@ -4,11 +4,12 @@ import {getCreator} from '../../services/requests/creator/creatorMavel';
 import Header from '../../shared/components/Header';
 import styled from 'styled-components/native';
 import {Creator} from '../../types/creator';
-import Loading from '../../shared/components/Loading';
 import {NavigationContainerRef} from '@react-navigation/native';
 import DataLine from '../../shared/components/DataLine';
 import Image from '../../shared/components/Image';
 import ListAux from '../../shared/components/ListAux';
+import {useDispatch} from 'react-redux';
+import * as types from '../../redux/types';
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -32,11 +33,11 @@ interface Props {
 }
 
 const DetailsCreator = (props: Props) => {
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const [creator, setCreator] = useState<Creator>();
 
   useEffect(() => {
-    setLoading(true);
+    dispatch({type: types.SET_LOADING, payload: true});
     if (props.route?.params?.resourceURI) {
       getCreator(props.route?.params?.resourceURI)
         .then((creator) => {
@@ -50,7 +51,7 @@ const DetailsCreator = (props: Props) => {
           errorLoadData();
         })
         .finally(() => {
-          setLoading(false);
+          dispatch({type: types.SET_LOADING, payload: false});
         });
     } else {
       errorLoadData();
@@ -66,9 +67,7 @@ const DetailsCreator = (props: Props) => {
     <>
       <MainView>
         <Header title={'Criador'} goBack={() => props.navigation.goBack()} />
-        {loading || !creator ? (
-          <Loading />
-        ) : (
+        {creator && (
           <ScrollView contentContainerStyle={styles.scrollView}>
             <>
               <Image image={creator.image} />

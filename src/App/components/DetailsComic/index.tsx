@@ -4,11 +4,12 @@ import {getComic} from '../../services/requests/comic/comicMarvel';
 import Header from '../../shared/components/Header';
 import styled from 'styled-components/native';
 import {Comic} from '../../types/comic';
-import Loading from '../../shared/components/Loading';
 import {NavigationContainerRef} from '@react-navigation/native';
 import DataLine from '../../shared/components/DataLine';
 import Image from '../../shared/components/Image';
 import ListAux from '../../shared/components/ListAux';
+import {useDispatch} from 'react-redux';
+import * as types from '../../redux/types';
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -32,11 +33,11 @@ interface Props {
 }
 
 const DetailsComic = (props: Props) => {
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const [comic, setComic] = useState<Comic>();
 
   useEffect(() => {
-    setLoading(true);
+    dispatch({type: types.SET_LOADING, payload: true});
     if (props.route?.params?.resourceURI) {
       getComic(props.route?.params?.resourceURI)
         .then((comic) => {
@@ -50,7 +51,7 @@ const DetailsComic = (props: Props) => {
           errorLoadData();
         })
         .finally(() => {
-          setLoading(false);
+          dispatch({type: types.SET_LOADING, payload: false});
         });
     } else {
       errorLoadData();
@@ -66,9 +67,7 @@ const DetailsComic = (props: Props) => {
     <>
       <MainView>
         <Header title={'Quadrinho'} goBack={() => props.navigation.goBack()} />
-        {loading || !comic ? (
-          <Loading />
-        ) : (
+        {comic && (
           <ScrollView contentContainerStyle={styles.scrollView}>
             <>
               <Image image={comic.image} />

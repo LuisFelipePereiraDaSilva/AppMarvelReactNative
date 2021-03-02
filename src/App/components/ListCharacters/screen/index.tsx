@@ -10,14 +10,14 @@ import {getListCharacters} from '../../../services/requests/character/characterM
 import styled from 'styled-components/native';
 import ElementList from '../components/ElementList';
 import {Character} from '../../../types/character';
-import Loading from '../../../shared/components/Loading';
 import {NavigationContainerRef} from '@react-navigation/native';
 import BottomNumber from '../components/BottomNumber';
 import {theme} from '../../../shared/styles/theme';
+import {useDispatch} from 'react-redux';
+import * as types from '../../../redux/types';
 
 import ArrowLeft from '../assets/arrow-left.png';
 import ArrowRight from '../assets/arrow-right.png';
-import {ScrollView} from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -118,10 +118,10 @@ interface Props {
 }
 
 const ListPersonagens = (props: Props) => {
+  const dispatch = useDispatch();
   const [allCharacters, setAllCharacters] = useState<Character[]>([]);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [list, setList] = useState<Character[]>([]);
-  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const scrollView: any = useRef();
 
@@ -143,7 +143,7 @@ const ListPersonagens = (props: Props) => {
         Alert.alert('Ocorreu um erro ao carregar os personagens');
       })
       .finally(() => {
-        setLoading(false);
+        dispatch({type: types.SET_LOADING, payload: false});
       });
   }, []);
 
@@ -205,60 +205,56 @@ const ListPersonagens = (props: Props) => {
 
   return (
     <>
-      {loading ? (
-        <Loading />
-      ) : (
-        <MainView>
-          <ContainerHeader>
-            <Title>
-              BUSCA MARVEL<TitleAux>TESTE FRONT-END</TitleAux>
-            </Title>
-            <LineTitle />
-            <TitleTextInput>Nome do Personagem</TitleTextInput>
-            <TextInput onChangeText={(text) => search(text)} />
-          </ContainerHeader>
-          <Menu>
-            <Name>Nome</Name>
-          </Menu>
+      <MainView>
+        <ContainerHeader>
+          <Title>
+            BUSCA MARVEL<TitleAux>TESTE FRONT-END</TitleAux>
+          </Title>
+          <LineTitle />
+          <TitleTextInput>Nome do Personagem</TitleTextInput>
+          <TextInput onChangeText={(text) => search(text)} />
+        </ContainerHeader>
+        <Menu>
+          <Name>Nome</Name>
+        </Menu>
 
-          <FlatList
+        <FlatList
+          keyboardShouldPersistTaps={'handled'}
+          scrollEnabled={true}
+          data={list}
+          keyExtractor={(item, index) => {
+            return index.toString();
+          }}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              delayPressIn={100}
+              onPress={() =>
+                props.navigation.navigate('DetailsCharacter', {
+                  resourceURI: item.resourceURI,
+                })
+              }>
+              <ElementList name={item.name} image={item.image} />
+            </TouchableOpacity>
+          )}
+        />
+
+        <ContainerFooter>
+          <TouchableOpacity onPress={() => previousPage()}>
+            <ImageArrow source={ArrowLeft} />
+          </TouchableOpacity>
+          <ScrollViewNumbers
             keyboardShouldPersistTaps={'handled'}
-            scrollEnabled={true}
-            data={list}
-            keyExtractor={(item, index) => {
-              return index.toString();
-            }}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                delayPressIn={100}
-                onPress={() =>
-                  props.navigation.navigate('DetailsCharacter', {
-                    resourceURI: item.resourceURI,
-                  })
-                }>
-                <ElementList name={item.name} image={item.image} />
-              </TouchableOpacity>
-            )}
-          />
-
-          <ContainerFooter>
-            <TouchableOpacity onPress={() => previousPage()}>
-              <ImageArrow source={ArrowLeft} />
-            </TouchableOpacity>
-            <ScrollViewNumbers
-              keyboardShouldPersistTaps={'handled'}
-              ref={scrollView}
-              horizontal={true}
-              contentContainerStyle={styles.scrollView}>
-              <ContainerNumbers>{mountPagination()}</ContainerNumbers>
-            </ScrollViewNumbers>
-            <TouchableOpacity onPress={() => nextPage()}>
-              <ImageArrow source={ArrowRight} />
-            </TouchableOpacity>
-          </ContainerFooter>
-          <LineFooter />
-        </MainView>
-      )}
+            ref={scrollView}
+            horizontal={true}
+            contentContainerStyle={styles.scrollView}>
+            <ContainerNumbers>{mountPagination()}</ContainerNumbers>
+          </ScrollViewNumbers>
+          <TouchableOpacity onPress={() => nextPage()}>
+            <ImageArrow source={ArrowRight} />
+          </TouchableOpacity>
+        </ContainerFooter>
+        <LineFooter />
+      </MainView>
     </>
   );
 };

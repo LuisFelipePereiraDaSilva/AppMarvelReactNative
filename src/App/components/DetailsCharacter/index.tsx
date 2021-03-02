@@ -4,11 +4,12 @@ import {getCharacter} from '../../services/requests/character/characterMarvel';
 import Header from '../../shared/components/Header';
 import styled from 'styled-components/native';
 import {Character} from '../../types/character';
-import Loading from '../../shared/components/Loading';
 import {NavigationContainerRef} from '@react-navigation/native';
 import DataLine from '../../shared/components/DataLine';
 import Image from '../../shared/components/Image';
 import ListAux from '../../shared/components/ListAux';
+import {useDispatch} from 'react-redux';
+import * as types from '../../redux/types';
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -32,11 +33,11 @@ interface Props {
 }
 
 const DetailsCharacter = (props: Props) => {
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const [character, setCharacter] = useState<Character>();
 
   useEffect(() => {
-    setLoading(true);
+    dispatch({type: types.SET_LOADING, payload: true});
     if (props.route?.params?.resourceURI) {
       getCharacter(props.route?.params?.resourceURI)
         .then((character) => {
@@ -50,7 +51,7 @@ const DetailsCharacter = (props: Props) => {
           errorLoadData();
         })
         .finally(() => {
-          setLoading(false);
+          dispatch({type: types.SET_LOADING, payload: false});
         });
     } else {
       errorLoadData();
@@ -66,9 +67,7 @@ const DetailsCharacter = (props: Props) => {
     <>
       <MainView>
         <Header title={'Personagem'} goBack={() => props.navigation.goBack()} />
-        {loading || !character ? (
-          <Loading />
-        ) : (
+        {character && (
           <ScrollView contentContainerStyle={styles.scrollView}>
             <>
               <Image image={character.image} />

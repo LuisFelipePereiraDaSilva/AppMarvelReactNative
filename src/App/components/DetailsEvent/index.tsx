@@ -4,11 +4,12 @@ import {getEvent} from '../../services/requests/event/eventMarvel';
 import Header from '../../shared/components/Header';
 import styled from 'styled-components/native';
 import {Event} from '../../types/event';
-import Loading from '../../shared/components/Loading';
 import {NavigationContainerRef} from '@react-navigation/native';
 import DataLine from '../../shared/components/DataLine';
 import Image from '../../shared/components/Image';
 import ListAux from '../../shared/components/ListAux';
+import {useDispatch} from 'react-redux';
+import * as types from '../../redux/types';
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -32,11 +33,11 @@ interface Props {
 }
 
 const DetailsEvent = (props: Props) => {
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const [event, setEvent] = useState<Event>();
 
   useEffect(() => {
-    setLoading(true);
+    dispatch({type: types.SET_LOADING, payload: true});
     if (props.route?.params?.resourceURI) {
       getEvent(props.route?.params?.resourceURI)
         .then((event) => {
@@ -50,7 +51,7 @@ const DetailsEvent = (props: Props) => {
           errorLoadData();
         })
         .finally(() => {
-          setLoading(false);
+          dispatch({type: types.SET_LOADING, payload: false});
         });
     } else {
       errorLoadData();
@@ -66,9 +67,7 @@ const DetailsEvent = (props: Props) => {
     <>
       <MainView>
         <Header title={'Evento'} goBack={() => props.navigation.goBack()} />
-        {loading || !event ? (
-          <Loading />
-        ) : (
+        {event && (
           <ScrollView contentContainerStyle={styles.scrollView}>
             <>
               <Image image={event.image} />
